@@ -1,12 +1,13 @@
 import { initializeApp } from "firebase/app";
 import { initializeAuth, getReactNativePersistence, getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
+import { initializeAppCheck, ReCaptchaV3Provider, CustomProvider } from "firebase/app-check";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Platform } from "react-native";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  //copy from firebase
+  //firebase keys here
 };
 
 // Enable App Check debug token in local development environment
@@ -23,11 +24,25 @@ export const auth = typeof getReactNativePersistence === 'function'
 
 export const db = getFirestore(app);
 
-// Initialize App Check (ReCaptchaV3 site key is bypassed when FIREBASE_APPCHECK_DEBUG_TOKEN is active)
+// Use ReCaptchaV3Provider only on web. On native runtimes (iOS/Android), use CustomProvider
+// to avoid reference errors to the web DOM (document / window).
+const provider = Platform.OS === 'web'
+  ? new ReCaptchaV3Provider('')
+  : new CustomProvider({
+    getToken: () => {
+      return Promise.resolve({
+        token: 'debug-token-placeholder',
+        expireTimeMillis: Date.now() + 3600000
+      });
+    }
+  });
+
+// Initialize App Check
 export const appCheck = initializeAppCheck(app, {
-  provider: new ReCaptchaV3Provider('6Ld_placeholder_key_for_appcheck_debug_bypass'),
+  provider,
   isTokenAutoRefreshEnabled: true
 });
+
 
 
 

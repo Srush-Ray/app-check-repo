@@ -27,7 +27,7 @@ try {
   console.warn("and save it as 'backend/serviceAccountKey.json'.");
   console.warn("Attempting to initialize Firebase Admin SDK using application default credentials...");
   console.warn("---------------------------------------------------------------------------------");
-  
+
   try {
     admin.initializeApp();
     console.log("Firebase Admin SDK initialized using default credentials.");
@@ -66,22 +66,22 @@ app.post('/add', verifyAppCheck, async (req, res) => {
 
   // 1. Check for missing values
   if (!uid || !username || !email || !phonenumber) {
-    return res.status(400).json({ 
-      error: 'Missing required fields. Please provide: uid, username, email, phonenumber' 
+    return res.status(400).json({
+      error: 'Missing required fields. Please provide: uid, username, email, phonenumber'
     });
   }
 
   // 2. Check for empty values
   if (!uid.trim() || !username.trim() || !email.trim() || !phonenumber.trim()) {
-    return res.status(400).json({ 
-      error: 'All fields (uid, username, email, phonenumber) must contain valid non-empty values.' 
+    return res.status(400).json({
+      error: 'All fields (uid, username, email, phonenumber) must contain valid non-empty values.'
     });
   }
 
   // 3. Verify database initialization
   if (!db) {
-    return res.status(503).json({ 
-      error: 'Firestore database is not initialized. Please configure the serviceAccountKey.json file on the server.' 
+    return res.status(503).json({
+      error: 'Firestore database is not initialized. Please configure the serviceAccountKey.json file on the server.'
     });
   }
 
@@ -112,8 +112,67 @@ app.post('/add', verifyAppCheck, async (req, res) => {
     });
   } catch (error) {
     console.error(`[Error] Failed to write to Firestore for user ${uid}:`, error.message);
-    return res.status(500).json({ 
-      error: 'Failed to write data to database: ' + error.message 
+    return res.status(500).json({
+      error: 'Failed to write data to database: ' + error.message
+    });
+  }
+});
+
+// POST /add route
+app.post('/addData', async (req, res) => {
+
+  const { uid, username, email, phonenumber } = req.body;
+
+  // 1. Check for missing values
+  if (!uid || !username || !email || !phonenumber) {
+    return res.status(400).json({
+      error: 'Missing required fields. Please provide: uid, username, email, phonenumber'
+    });
+  }
+
+  // 2. Check for empty values
+  if (!uid.trim() || !username.trim() || !email.trim() || !phonenumber.trim()) {
+    return res.status(400).json({
+      error: 'All fields (uid, username, email, phonenumber) must contain valid non-empty values.'
+    });
+  }
+
+  // 3. Verify database initialization
+  if (!db) {
+    return res.status(503).json({
+      error: 'Firestore database is not initialized. Please configure the serviceAccountKey.json file on the server.'
+    });
+  }
+
+  try {
+    const timestamp = Date.now().toString();
+    const userDocRef = db.collection('details').doc(uid.trim());
+
+    // Update the document by nesting the contact details under the timestamp key
+    await userDocRef.set({
+      [timestamp]: {
+        username: username.trim(),
+        email: email.trim(),
+        phonenumber: phonenumber.trim()
+      }
+    }, { merge: true });
+
+    console.log(`[Success] Added entry for user ${uid} under timestamp ${timestamp}`);
+
+    return res.status(200).json({
+      success: true,
+      message: 'Details successfully stored in Firestore',
+      timestamp: timestamp,
+      data: {
+        username: username.trim(),
+        email: email.trim(),
+        phonenumber: phonenumber.trim()
+      }
+    });
+  } catch (error) {
+    console.error(`[Error] Failed to write to Firestore for user ${uid}:`, error.message);
+    return res.status(500).json({
+      error: 'Failed to write data to database: ' + error.message
     });
   }
 });

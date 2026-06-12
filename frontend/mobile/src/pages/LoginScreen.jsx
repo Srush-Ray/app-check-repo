@@ -20,7 +20,6 @@ export default function LoginScreen({ navigation }) {
       uid: user.uid,
       displayName: user.displayName,
     }));
-    navigation.navigate('Home');
   };
 
   const handleEmailSignIn = () => {
