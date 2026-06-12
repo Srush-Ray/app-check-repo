@@ -1,0 +1,5 @@
+cd backend
+npm install
+cd ../frontend
+cd mobile
+npm install
