@@ -1,0 +1,64 @@
+
+> firebase-demo-workshop@0.0.0 review
+> node scripts/code-review.js
+
+🚀 Starting Portfolio Project Code Review...
+
+--- [1] Git Status & Changed Files ---
+⏳ Running: Checking unstaged changes...
+⚠️ Found 4 uncommitted/untracked file(s):
+  M eslint.config.js
+   M package.json
+  ?? review.raw.txt
+  ?? scripts/
+
+--- [2] ESLint Code Quality ---
+⏳ Running: Running ESLint static analysis...
+📄 src/pages/Home.jsx
+  [Error] Line 12:9 - 'user' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u. (no-unused-vars)
+  [Error] Line 13:23 - 'setDynamicName' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u. (no-unused-vars)
+  [Error] Line 14:24 - 'setDynamicEmail' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u. (no-unused-vars)
+  [Error] Line 15:29 - 'setDynamicExperience' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u. (no-unused-vars)
+  [Error] Line 21:7 - Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  19 |     try {
+  20 |       const list = getMockShoutouts();
+> 21 |       setShoutouts(list);
+     |       ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  22 |     } catch (error) {
+  23 |       console.error("Error fetching shoutouts:", error);
+  24 |     } (react-hooks/set-state-in-effect)
+📄 src/pages/ManageShoutouts.jsx
+  [Error] Line 11:7 - Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+   9 |     try {
+  10 |       const list = getMockShoutouts();
+> 11 |       setShoutouts(list);
+     |       ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  12 |     } catch (error) {
+  13 |       console.error("Error fetching shoutouts:", error);
+  14 |     } (react-hooks/set-state-in-effect)
+
+❌ ESLint found 6 errors and 0 warnings.
+
+--- [3] Scanning Source Code for Common Issues ---
+✅ Code scan complete.
+
+--- [4] Build Validation ---
+⏳ Running: Running production build test...
+✅ Build passed successfully! Ready for production deployment.
+
+=================== Summary ===================
+🔴 Code Review FAILED. Please resolve the errors highlighted above before pushing/deploying.

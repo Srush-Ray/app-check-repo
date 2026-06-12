@@ -1,0 +1,8 @@
+curl -X POST http://localhost:5001/add \
+  -H "Content-Type: application/json" \
+  -d '{"uid": "test-attacker", "username": "Attacker", "email": "hacker@hacker.com", "phonenumber": "999"}'
+
+curl -X POST http://localhost:5001/add \
+  -H "Content-Type: application/json" \
+  -H "X-Firebase-AppCheck: this-is-a-fake-token" \
+  -d '{"uid": "test-attacker", "username": "Attacker", "email": "hacker@hacker.com", "phonenumber": "999"}'
