@@ -1,0 +1,65 @@
+# OS metadata
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+*.pem
+
+# IDEs and editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Local env files and secrets
+.env
+.env.*
+!.env.example
+**/.env*.local
+*.key.json
+secrets/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Build outputs
+dist/
+**/dist/
+dist-ssr/
+**/dist-ssr/
+web-build/
+**/web-build/
+
+# Mobile / Expo
+.expo/
+**/.expo/
+expo-env.d.ts
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+.metro-health-check*
+*.tsbuildinfo
+ios/
+**/ios/
+android/
+**/android/
+

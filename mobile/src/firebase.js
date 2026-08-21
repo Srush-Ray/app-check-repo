@@ -5,18 +5,20 @@ import { initializeAppCheck, ReCaptchaV3Provider, CustomProvider, getToken } fro
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform } from "react-native";
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
- //firebase keys here
-};
+import firebaseConfig from "../../backend/firebase";
+import constants from "../../constants.json";
+
+export const APP_CHECK_DEMO_TOKEN = constants.APP_CHECK_DEMO_TOKEN;
+
 
 // Enable App Check debug token in local development environment
 if (__DEV__) {
-  globalThis.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+  globalThis.FIREBASE_APPCHECK_DEBUG_TOKEN = APP_CHECK_DEMO_TOKEN;
   if (Platform.OS === 'web') {
-    window.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+    window.FIREBASE_APPCHECK_DEBUG_TOKEN = APP_CHECK_DEMO_TOKEN;
   }
 }
+
 
 // Initialize Firebase and Auth services with AsyncStorage persistence
 const app = initializeApp(firebaseConfig);

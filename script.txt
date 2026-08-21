@@ -1,5 +1,8 @@
 cd backend
 npm install
-cd ../frontend
-cd mobile
+cd ../mobile
 npm install
+cd ../web
+npm install
+cd ..
+

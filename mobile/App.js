@@ -4,7 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import store from './src/redux/store';
 import { login, logout, selectUser } from './src/redux/userSlice';
-import { getMockCurrentUser, mockLogout } from './src/data/mockData';
+// import { getMockCurrentUser, mockLogout } from './src/data/mockData';
 import { signOut, onAuthStateChanged } from 'firebase/auth';
 import { auth } from './src/firebase';
 import HomeScreen from './src/pages/HomeScreen';

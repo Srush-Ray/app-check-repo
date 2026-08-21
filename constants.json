@@ -1,0 +1,5 @@
+{
+  "APP_CHECK_DEMO_TOKEN": "",
+  "PORT": 5001,
+  "BACKEND_URL": "http://localhost:5001"
+}

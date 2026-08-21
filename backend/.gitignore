@@ -2,7 +2,6 @@
 node_modules/
 
 # Firebase service account keys and secrets
-serviceAccountKey.json
 *.key.json
 secrets/
 

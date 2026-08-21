@@ -1,8 +1,31 @@
-curl -X POST http://localhost:5001/add \
-  -H "Content-Type: application/json" \
-  -d '{"uid": "test-attacker", "username": "Attacker", "email": "hacker@hacker.com", "phonenumber": "999"}'
+# =========================================================================
+# FIREBASE APP CHECK DEMO CURL COMMANDS
+# Demo App Check Token: 5CFE951A-AA68-463E-A858-28E93A6F8C3B
+# =========================================================================
 
+# 1. REJECTED: Missing X-Firebase-AppCheck header -> 401 Unauthorized
 curl -X POST http://localhost:5001/add \
   -H "Content-Type: application/json" \
-  -H "X-Firebase-AppCheck: this-is-a-fake-token" \
-  -d '{"uid": "test-attacker", "username": "Attacker", "email": "hacker@hacker.com", "phonenumber": "999"}'
+  -d '{"uid": "unauthorized-user", "username": "NoToken", "email": "none@example.com", "phonenumber": "+0000000000"}'
+
+# 2. REJECTED: Invalid X-Firebase-AppCheck token header -> 401 Unauthorized
+curl -X POST http://localhost:5001/add \
+  -H "Content-Type: application/json" \
+  -H "X-Firebase-AppCheck: invalid-fake-token-123" \
+  -d '{"uid": "unauthorized-user", "username": "BadToken", "email": "bad@example.com", "phonenumber": "+0000000000"}'
+
+# 3. SUCCESS: Valid Demo App Check Token -> 200 OK
+curl -X POST http://localhost:5001/add \
+  -H "Content-Type: application/json" \
+  -H "X-Firebase-AppCheck: 5CFE951A-AA68-463E-A858-28E93A6F8C3B" \
+  -d '{"uid": "appcheck-demo-user-123", "username": "JohnDoe", "email": "john@example.com", "phonenumber": "+1234567890"}'
+
+# 4. SUCCESS: Read All Data with Demo App Check Token -> 200 OK
+curl -X GET http://localhost:5001/details \
+  -H "X-Firebase-AppCheck: 5CFE951A-AA68-463E-A858-28E93A6F8C3B"
+
+# 5. SUCCESS: Read Specific UID Data with Demo App Check Token -> 200 OK
+curl -X GET http://localhost:5001/details/appcheck-demo-user-123 \
+  -H "X-Firebase-AppCheck: 5CFE951A-AA68-463E-A858-28E93A6F8C3B"
+
+
