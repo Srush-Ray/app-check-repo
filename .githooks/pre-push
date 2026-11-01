@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# Git pre-push hook to prevent direct pushes to main or master
+
+protected_branches="main master"
+current_branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+
+# 1. Check if currently on a protected branch
+for branch in $protected_branches; do
+  if [ "$current_branch" = "$branch" ]; then
+    echo "❌ ERROR: Direct push from branch '$branch' is not allowed."
+    echo "💡 Please create a feature branch and open a Pull Request instead:"
+    echo "   git checkout -b feature/your-feature-name"
+    exit 1
+  fi
+done
+
+# 2. Check remote target refs passed via stdin (e.g., git push origin HEAD:main)
+while read local_ref local_sha remote_ref remote_sha; do
+  for branch in $protected_branches; do
+    if [ "$remote_ref" = "refs/heads/$branch" ]; then
+      echo "❌ ERROR: Pushing directly to remote '$branch' ($remote_ref) is not allowed."
+      echo "💡 Please push to a feature branch and open a Pull Request instead."
+      exit 1
+    fi
+  done
+done
+
+exit 0
+
